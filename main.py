@@ -11,6 +11,7 @@ from blockchain.seed import Seed
 ip = '194.14.246.74'
 if ip:
 	s = Seed(ip, 8333)
+	time.sleep(10)
 	s.start_listen_thread()
 	s.connect()
 	s.version()
@@ -19,5 +20,5 @@ if ip:
 	s.getaddr()
 
 while True:
-	time.sleep(5)
-
+	time.sleep(60)
+	s.getaddr()

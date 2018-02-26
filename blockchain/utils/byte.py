@@ -1,10 +1,14 @@
 from io import BytesIO
 import struct
 import datetime
+import binascii
 
 class ObjectIO(BytesIO):
 	def __init__(self, *args, **kwarg):
 		super(ObjectIO, self).__init__(*args, **kwarg)
+
+	def length(self):
+		return self.__sizeof__()
 
 	def read_byte(self): # 2 btyes
 		data = self.read(1)

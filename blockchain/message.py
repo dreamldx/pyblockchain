@@ -6,16 +6,21 @@ from hashlib import sha256
 from utils import net as u
 from utils import byte as b
 import binascii
+import sys
 
 def read_message(sock):
 	resp_header = sock.recv(24)
 	sb = b.ObjectIO()
 	_, msg, length, checksum = struct.unpack("<I 12s I I", resp_header)
-	totle = length
-	while totle > 0:
-		remain = 8096 if totle > 8096 else totle
-		sb.write(sock.recv(8096))
-		totle = totle - 8096
+
+	total = length
+
+	while total > 0:
+		remain = total if total < 8096 else 8096
+		income = sock.recv(remain)
+		sb.write(income)
+		total = total - len(income)
+		print('Recieve: %d/%d'%(length - total, length))
 
 	sb.seek(0)
 	print('<-- (%s) %s %d' % (msg, binascii.hexlify(resp_header), length))
